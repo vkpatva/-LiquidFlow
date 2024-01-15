@@ -84,7 +84,7 @@ export const Login = () => {
     }
   };
   return signer ? (
-    <Home/>
+    <Home signer={signer}/>
   ) : isLoading ? (
     <Spinner loadingStatus={loadingStatus} />
   ) : error ? (

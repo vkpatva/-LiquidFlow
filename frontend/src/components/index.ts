@@ -1,4 +1,8 @@
 export { Login } from "./Login.component";
-export {Spinner} from './Spinner.component';
-export {Error} from './Error.component';
-export {Home} from './Home.page'
+export { Spinner } from "./Spinner.component";
+export { Error } from "./Error.component";
+export { Home } from "./Home.page";
+export { Invest } from "./Investment.component";
+export { StartTrade } from "./StartTrade.component";
+export { Payments } from "./Payments.component";
+export { Sidebar } from "./Sidebar.component";
