@@ -14,7 +14,7 @@ const root = createRoot(container!);
 root.render(
   <React.StrictMode>
     <ThirdwebProvider
-      clientId={import.meta.env.VITE_TEMPLATE_CLIENT_ID}
+      clientId={import.meta.env.VITE_THIRDWEB_APP_ID}
       activeChain={activeChain}
     >
       <App />

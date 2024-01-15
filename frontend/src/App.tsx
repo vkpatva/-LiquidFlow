@@ -1,7 +1,7 @@
-import { Login , Spinner, Error} from "./components";
+import { Login } from "./components";
 
 export default function Home() {
   return (
-    <Error/>
+    <Login/>
   );
 }

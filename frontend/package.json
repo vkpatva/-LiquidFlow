@@ -9,6 +9,8 @@
     "deploy": "yarn build && npx thirdweb@latest upload dist"
   },
   "dependencies": {
+    "@simplewebauthn/browser": "^8.3.4",
+    "@simplewebauthn/server": "^8.3.6",
     "@thirdweb-dev/react": "^4",
     "@thirdweb-dev/sdk": "^4",
     "autoprefixer": "^10.4.16",
