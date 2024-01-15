@@ -1,4 +1,6 @@
+import { useSigner } from "@thirdweb-dev/react";
 import { Form, Field } from "react-final-form";
+import { InitateTrade } from "../lib/SmartContract";
 interface FormValues {
   _receiver: string;
   _amount: number;
@@ -6,8 +8,9 @@ interface FormValues {
   _tradeDescription: string;
 }
 const TradeForm = () => {
+  const signer = useSigner();
   const onSubmit = (values: any) => {
-    console.log(values);
+    InitateTrade(signer, values);
   };
   const validate = (values: FormValues) => {
     const errors: any = {};

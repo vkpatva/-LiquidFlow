@@ -1,6 +1,9 @@
+import { useAddress } from "@thirdweb-dev/react";
 import TradeForm from "./TradeForm.component";
+import { shortenEthereumAddress } from "../lib/Helper";
 
 export const StartTrade = () => {
+  const shortenAddress = shortenEthereumAddress(useAddress() as string);
   return (
     <div>
       <div className="bg-[#d3d3d3] text-black py-4 shadow-md">
@@ -13,7 +16,9 @@ export const StartTrade = () => {
             </div>
             <div className="flex items-center">
               <span className="text-sm md:text-base">🌐 Address:</span>
-              <span className="font-semibold ml-2 text-lg">0x123...abc</span>
+              <span className="font-semibold ml-2 text-lg">
+                {shortenAddress}
+              </span>
             </div>
           </div>
         </div>

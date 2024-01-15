@@ -2,12 +2,12 @@ import { ThirdwebSDKProvider } from "@thirdweb-dev/react";
 import { Signer } from "ethers";
 import { Route, Routes, Outlet } from "react-router-dom";
 import { Payments, StartTrade, Invest, Sidebar } from ".";
-
+import { Sepolia } from "@thirdweb-dev/chains";
 export const Home = ({ signer }: { signer: Signer }) => {
   return (
     <ThirdwebSDKProvider
       signer={signer}
-      activeChain={"mumbai"}
+      activeChain={Sepolia}
       clientId={import.meta.env.VITE_THIRDWEB_APP_ID}
     >
       <div className="flex w-[100vw]">
