@@ -7,6 +7,7 @@ import {
 import { useEffect, useState } from "react";
 import { connectDirectly, connectSmartWallet } from "../lib/SmartWallet";
 import { Spinner , Error } from ".";
+import { Home } from "./Home.page";
 type RegisterForm = {
   username: string;
 };
@@ -83,7 +84,7 @@ export const Login = () => {
     }
   };
   return signer ? (
-    <>Logged In</>
+    <Home/>
   ) : isLoading ? (
     <Spinner loadingStatus={loadingStatus} />
   ) : error ? (
