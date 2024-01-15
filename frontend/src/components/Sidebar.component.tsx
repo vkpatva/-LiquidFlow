@@ -1,6 +1,6 @@
 export const Sidebar = () => {
   return (
-    <div className="flex h-screen flex-col justify-between bg-white border-e shadow-lg">
+    <div className="flex h-screen flex-col justify-between bg-[#d3d3d3] border-e shadow-lg">
       <div className="p-4">
         <img
           className="h-24 w-24 mx-auto"
@@ -38,12 +38,9 @@ export const Sidebar = () => {
         </ul>
       </div>
 
-      <div className="sticky inset-x-0 bottom-0 border-t border-gray-100">
-        <strong className="p-4">Build By : </strong>
-        <a
-          href="#"
-          className="flex items-center gap-2 bg-white p-4 hover:bg-gray-50"
-        >
+      <div className="sticky inset-x-0 bottom-0 border-t border-black p-4">
+        <strong className="">Build By : </strong>
+        <a href="#" className="flex items-center gap-2 pt-2 hover:bg-gray-50">
           <div>
             <p className="text-xs">
               <strong className="block font-medium">Viraj Patva</strong>
