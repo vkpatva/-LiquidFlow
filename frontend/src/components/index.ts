@@ -6,3 +6,4 @@ export { Invest } from "./Investment.component";
 export { StartTrade } from "./StartTrade.component";
 export { Payments } from "./Payments.component";
 export { Sidebar } from "./Sidebar.component";
+export {TradeCard} from './TradeCard.component';

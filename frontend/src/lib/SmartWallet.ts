@@ -81,6 +81,5 @@ import { AccountFactory } from "../utils/constants";
     });
     statusCallback("connecting...");
     await smartWallet.connect({ personalWallet });
-  
     return smartWallet;
   };
