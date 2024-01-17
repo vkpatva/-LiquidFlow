@@ -51,8 +51,8 @@ export const Invest = () => {
               tradeDescription={trade.tradeDescription}
               payerAddress={trade.payer}
               receiverAddress={trade.receiver}
-              amount={trade.amount} // You need to adapt this to the actual field name in your data
-              days={trade.paymentDays} // You need to adapt this to the actual field name in your data
+              amount={trade.amount}
+              days={trade.paymentDays}
             />
           </div>
         ))}
