@@ -6,7 +6,7 @@ import {
   useSigner,
 } from "@thirdweb-dev/react";
 import { useEffect, useState } from "react";
-import { requestFinance } from "../lib/SmartContract";
+import { invest, requestFinance } from "../lib/SmartContract";
 import { LiquidityFlow } from "../utils/constants";
 type TradeCardProps = {
   tradeDescription: string;
@@ -36,18 +36,20 @@ export const TradeCard = ({
   const [financed, setIsFinanced] = useState(false);
   const [isInvested, setIsInvested] = useState(false);
   useEffect(() => {
-    console.log("Trade Card", { address, receiverAddress });
     setIsReceiver(address?.toLowerCase() == receiverAddress.toLowerCase());
   }, []);
   useEffect(() => {
     if (data) {
+      console.log({ ...data });
       if (parseInt(data.financeAmount)) {
         setIsFinanced(true);
       }
       setIsInvested(data.isFinanced);
       setReturnPercentage(
-        ((parseInt(data.amount) - parseInt(data.financeAmount)) * 100) /
-          parseInt(data.amount)
+        Math.floor(
+          ((parseInt(data.amount) - parseInt(data.financeAmount)) * 100) /
+            parseInt(data.amount)
+        )
       );
     }
   }, [data]);
@@ -90,7 +92,12 @@ export const TradeCard = ({
             </button>
           )}
           {!isReceiver && financed && !isInvested && (
-            <button className="mt-4 bg-green-700 text-white py-2 px-4 rounded hover:bg-green-800">
+            <button
+              className="mt-4 bg-green-700 text-white py-2 px-4 rounded hover:bg-green-800"
+              onClick={() => {
+                invest(signer, id, data.financeAmount);
+              }}
+            >
               Invest
             </button>
           )}
