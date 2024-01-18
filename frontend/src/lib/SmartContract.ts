@@ -19,3 +19,15 @@ export const InitateTrade = async (signer: any, values :FormValues ) => {
     console.log('Trade Transaction Completed',{...tradeTx});
 
 }
+
+export const requestFinance = async (signer: any, tradeId : string , amount : number ) => {
+  console.log(tradeId,amount)
+  const liquidityFlowInstance =  new ethers.Contract(LiquidityFlow,ContractAbi,signer);
+  const tradeTx =await liquidityFlowInstance.requestFinance(tradeId,amount,{
+    gasLimit: gasLimit,
+  })
+    console.log({ ...tradeTx });
+  await tradeTx.wait();
+  console.log('Trade Transaction Completed',{...tradeTx});
+
+}

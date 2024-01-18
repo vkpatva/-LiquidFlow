@@ -53,6 +53,7 @@ export const Invest = () => {
               receiverAddress={trade.receiver}
               amount={trade.amount}
               days={trade.paymentDays}
+              id={trade.tradeId}
             />
           </div>
         ))}

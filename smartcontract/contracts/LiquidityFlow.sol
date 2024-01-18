@@ -113,6 +113,7 @@ contract LiquidFlow {
         );
         trades[_tradeId].financeAmount = _amountRequested;
         financeRequests[_tradeId] = FinanceRequest(_tradeId, _amountRequested);
+        trades[_tradeId].isFinanced = true;
         emit FinanceRequested(_tradeId, _amountRequested);
     }
 
