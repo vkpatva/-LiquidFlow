@@ -42,7 +42,6 @@ export const TradeCard = ({
   }, []);
   useEffect(() => {
     if (data) {
-      console.log({ ...data });
       if (parseInt(data.financeAmount)) {
         setIsFinanced(true);
       }

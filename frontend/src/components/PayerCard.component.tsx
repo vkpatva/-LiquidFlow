@@ -42,10 +42,7 @@ export const PayerCard = ({
   }, []);
   useEffect(() => {
     if (data) {
-      console.log({ ...data });
-      if (parseInt(data.paid)) {
-        setIsPaid(true);
-      }
+      setIsPaid(data.isPaid);
       setIsInvested(data.isFinanced);
       setReturnPercentage(
         Math.floor(
