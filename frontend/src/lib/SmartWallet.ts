@@ -23,11 +23,11 @@ import { AccountFactory } from "../utils/constants";
   ) => {
    
     const factory = await sdk.getContract(AccountFactory);
-    console.log(factory)
+
     const smartWalletAddress: string = await factory.call("getAccountContract", [
       username,
     ]);
-    console.log('Step 4',smartWalletAddress)
+
     return smartWalletAddress;
   };
   

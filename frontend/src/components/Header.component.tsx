@@ -14,7 +14,7 @@ export const Header = () => {
       setBalance(parseInt(data) / 10 ** 18);
     }
   }, [data]);
-  console.log(address);
+
   return (
     <div className="bg-[#d3d3d3] text-black py-4 shadow-md">
       <div className="max-w-6xl mx-auto px-4 flex justify-between items-center">

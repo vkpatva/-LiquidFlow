@@ -1,6 +1,7 @@
 import { useSigner } from "@thirdweb-dev/react";
 import { Form, Field } from "react-final-form";
 import { InitateTrade } from "../lib/SmartContract";
+import { useNavigate } from "react-router-dom";
 interface FormValues {
   _receiver: string;
   _amount: number;
@@ -8,9 +9,11 @@ interface FormValues {
   _tradeDescription: string;
 }
 const TradeForm = () => {
+  const nav = useNavigate();
   const signer = useSigner();
-  const onSubmit = (values: any) => {
-    InitateTrade(signer, values);
+  const onSubmit = async (values: any) => {
+    await InitateTrade(signer, values);
+    nav("/");
   };
   const validate = (values: FormValues) => {
     const errors: any = {};

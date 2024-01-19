@@ -8,6 +8,7 @@ import {
 import { useEffect, useState } from "react";
 import { invest, requestFinance } from "../lib/SmartContract";
 import { LiquidityFlow, ZeroAddress } from "../utils/constants";
+import { useNavigate } from "react-router-dom";
 type TradeCardProps = {
   tradeDescription: string;
   payerAddress: string;
@@ -27,6 +28,7 @@ export const TradeCard = ({
   id,
   investorAddress,
 }: TradeCardProps) => {
+  const nav = useNavigate();
   const address = useAddress();
   const signer = useSigner();
   const [isReceiver, setIsReceiver] = useState(false);
@@ -82,8 +84,13 @@ export const TradeCard = ({
           {isReceiver && !financed && (
             <button
               className="mt-4 bg-indigo-500 text-white py-2 px-4 rounded hover:bg-indigo-600"
-              onClick={() => {
-                requestFinance(signer, id, Math.floor(parseInt(amount) * 0.95));
+              onClick={async () => {
+                await requestFinance(
+                  signer,
+                  id,
+                  Math.floor(parseInt(amount) * 0.95)
+                );
+                nav("/");
               }}
             >
               Request Finance
@@ -92,8 +99,9 @@ export const TradeCard = ({
           {!isReceiver && financed && !isInvested && (
             <button
               className="mt-4 bg-green-700 text-white py-2 px-4 rounded hover:bg-green-800"
-              onClick={() => {
-                invest(signer, id, data.financeAmount);
+              onClick={async () => {
+                await invest(signer, id, data.financeAmount);
+                nav("/");
               }}
             >
               Invest

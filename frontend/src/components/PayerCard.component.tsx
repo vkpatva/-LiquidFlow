@@ -6,8 +6,9 @@ import {
   useSigner,
 } from "@thirdweb-dev/react";
 import { useEffect, useState } from "react";
-import { invest, payInvoice, requestFinance } from "../lib/SmartContract";
-import { LiquidityFlow, ZeroAddress } from "../utils/constants";
+import { payInvoice } from "../lib/SmartContract";
+import { LiquidityFlow } from "../utils/constants";
+import { useNavigate } from "react-router-dom";
 type TradeCardProps = {
   tradeDescription: string;
   payerAddress: string;
@@ -27,6 +28,7 @@ export const PayerCard = ({
   id,
   investorAddress,
 }: TradeCardProps) => {
+  const nav = useNavigate();
   const address = useAddress();
   const signer = useSigner();
   const [isPayer, setIsPayer] = useState(false);
@@ -36,14 +38,13 @@ export const PayerCard = ({
   ]);
   const [returnPercentage, setReturnPercentage] = useState(100);
   const [paid, setIsPaid] = useState(false);
-  const [isInvested, setIsInvested] = useState(false);
+
   useEffect(() => {
     setIsPayer(address?.toLowerCase() == payerAddress.toLowerCase());
   }, []);
   useEffect(() => {
     if (data) {
       setIsPaid(data.isPaid);
-      setIsInvested(data.isFinanced);
       setReturnPercentage(
         Math.floor(
           ((parseInt(data.amount) - parseInt(data.financeAmount)) * 100) /
@@ -80,21 +81,12 @@ export const PayerCard = ({
           {isPayer && !paid && (
             <button
               className="mt-4 bg-indigo-500 text-white py-2 px-4 rounded hover:bg-indigo-600"
-              onClick={() => {
-                payInvoice(signer, id, parseInt(amount));
+              onClick={async () => {
+                await payInvoice(signer, id, parseInt(amount));
+                nav("/payments");
               }}
             >
               Pay Invoice
-            </button>
-          )}
-          {!isPayer && paid && !isInvested && (
-            <button
-              className="mt-4 bg-green-700 text-white py-2 px-4 rounded hover:bg-green-800"
-              onClick={() => {
-                invest(signer, id, data.financeAmount);
-              }}
-            >
-              Invest
             </button>
           )}
         </div>
