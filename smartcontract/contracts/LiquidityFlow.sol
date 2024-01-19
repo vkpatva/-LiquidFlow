@@ -113,7 +113,6 @@ contract LiquidFlow {
         );
         trades[_tradeId].financeAmount = _amountRequested;
         financeRequests[_tradeId] = FinanceRequest(_tradeId, _amountRequested);
-        trades[_tradeId].isFinanced = true;
         emit FinanceRequested(_tradeId, _amountRequested);
     }
 
@@ -129,7 +128,11 @@ contract LiquidFlow {
             "Investment must match the finance requested amount"
         );
         require(
-            ghoToken.transferFrom(msg.sender, address(this), _amount),
+            ghoToken.transferFrom(
+                msg.sender,
+                trade.receiver,
+                _amount * 10 ** 18
+            ),
             "Transfer failed"
         );
 

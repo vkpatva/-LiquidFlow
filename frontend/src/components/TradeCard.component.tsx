@@ -53,7 +53,7 @@ export const TradeCard = ({
       );
     }
   }, [data]);
-
+  console.log({ isReceiver, isInvested, financed });
   return (
     <div className="max-w-md mx-auto bg-white rounded-xl shadow-md overflow-hidden md:max-w-2xl border border-gray-300 hover:border-indigo-500 transition-colors duration-300  min-h-[280px] bg-gradient-to-r from-blue-100 to-indigo-100">
       <div className="md:flex  p-6 h-full">
@@ -78,14 +78,7 @@ export const TradeCard = ({
             <button
               className="mt-4 bg-indigo-500 text-white py-2 px-4 rounded hover:bg-indigo-600"
               onClick={() => {
-                requestFinance(
-                  signer,
-                  id,
-                  Math.floor(
-                    ((Math.floor(Math.random() * 7) + 1) / 10) *
-                      parseInt(amount)
-                  )
-                );
+                requestFinance(signer, id, Math.floor(parseInt(amount) * 0.95));
               }}
             >
               Request Finance

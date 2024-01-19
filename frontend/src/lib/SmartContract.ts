@@ -35,8 +35,10 @@ export const requestFinance = async (signer: any, tradeId : string , amount : nu
 
 
 export const invest = async (signer: any, tradeId : string , amount : number ) => {
+  console.log('inside invest')
   const GHOInstance = new ethers.Contract(GHOToken,ERC20Abi,signer);
-  const approveTx = await GHOInstance.approve(LiquidityFlow,amount,{gasLimit});
+  const amountInWei = ethers.utils.parseEther(amount.toString());
+  const approveTx = await GHOInstance.approve(LiquidityFlow,amountInWei,{gasLimit});
   await approveTx.wait();
   console.log({...approveTx})
   const liquidityFlowInstance =  new ethers.Contract(LiquidityFlow,ContractAbi,signer);
