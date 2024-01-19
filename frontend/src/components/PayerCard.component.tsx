@@ -6,7 +6,7 @@ import {
   useSigner,
 } from "@thirdweb-dev/react";
 import { useEffect, useState } from "react";
-import { invest, requestFinance } from "../lib/SmartContract";
+import { invest, payInvoice, requestFinance } from "../lib/SmartContract";
 import { LiquidityFlow, ZeroAddress } from "../utils/constants";
 type TradeCardProps = {
   tradeDescription: string;
@@ -18,7 +18,7 @@ type TradeCardProps = {
   id: string;
 };
 
-export const TradeCard = ({
+export const PayerCard = ({
   tradeDescription,
   payerAddress,
   receiverAddress,
@@ -29,22 +29,22 @@ export const TradeCard = ({
 }: TradeCardProps) => {
   const address = useAddress();
   const signer = useSigner();
-  const [isReceiver, setIsReceiver] = useState(false);
+  const [isPayer, setIsPayer] = useState(false);
   const { contract } = useContract(LiquidityFlow);
   const { data, isLoading } = useContractRead(contract, "getTradeDetails", [
     id,
   ]);
   const [returnPercentage, setReturnPercentage] = useState(100);
-  const [financed, setIsFinanced] = useState(false);
+  const [paid, setIsPaid] = useState(false);
   const [isInvested, setIsInvested] = useState(false);
   useEffect(() => {
-    setIsReceiver(address?.toLowerCase() == receiverAddress.toLowerCase());
+    setIsPayer(address?.toLowerCase() == payerAddress.toLowerCase());
   }, []);
   useEffect(() => {
     if (data) {
       console.log({ ...data });
-      if (parseInt(data.financeAmount)) {
-        setIsFinanced(true);
+      if (parseInt(data.paid)) {
+        setIsPaid(true);
       }
       setIsInvested(data.isFinanced);
       setReturnPercentage(
@@ -80,17 +80,17 @@ export const TradeCard = ({
           ) : (
             ""
           )}
-          {isReceiver && !financed && (
+          {isPayer && !paid && (
             <button
               className="mt-4 bg-indigo-500 text-white py-2 px-4 rounded hover:bg-indigo-600"
               onClick={() => {
-                requestFinance(signer, id, Math.floor(parseInt(amount) * 0.95));
+                payInvoice(signer, id, parseInt(amount));
               }}
             >
-              Request Finance
+              Pay Invoice
             </button>
           )}
-          {!isReceiver && financed && !isInvested && (
+          {!isPayer && paid && !isInvested && (
             <button
               className="mt-4 bg-green-700 text-white py-2 px-4 rounded hover:bg-green-800"
               onClick={() => {

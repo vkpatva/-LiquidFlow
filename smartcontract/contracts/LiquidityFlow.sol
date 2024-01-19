@@ -15,7 +15,7 @@ interface IERC20 {
 }
 
 contract LiquidFlow {
-    IERC20 public ghoToken;
+    IERC20 public GhoToken;
 
     struct Trade {
         address payer;
@@ -63,7 +63,7 @@ contract LiquidFlow {
     );
 
     constructor(address _ghoTokenAddress) {
-        ghoToken = IERC20(_ghoTokenAddress);
+        GhoToken = IERC20(_ghoTokenAddress);
     }
 
     /**
@@ -128,7 +128,7 @@ contract LiquidFlow {
             "Investment must match the finance requested amount"
         );
         require(
-            ghoToken.transferFrom(
+            GhoToken.transferFrom(
                 msg.sender,
                 trade.receiver,
                 _amount * 10 ** 18
@@ -139,6 +139,7 @@ contract LiquidFlow {
         trade.isFinanced = true;
         trade.investor = msg.sender;
         emit InvoiceInvested(_tradeId, msg.sender, _amount);
+        emit PaymentWithdrawn(_tradeId, trade.receiver, trade.amount);
     }
 
     /**
@@ -148,74 +149,32 @@ contract LiquidFlow {
     function payInvoice(uint _tradeId) external {
         Trade storage trade = trades[_tradeId];
         require(msg.sender == trade.payer, "Only payer can pay the invoice");
-        require(
-            ghoToken.transferFrom(msg.sender, address(this), trade.amount),
-            "Transfer failed"
-        );
-
+        if (
+            trade.investor !=
+            address(0x0000000000000000000000000000000000000000)
+        ) {
+            require(
+                GhoToken.transferFrom(
+                    msg.sender,
+                    trade.investor,
+                    trade.amount * 10 ** 18
+                ),
+                "Transfer failed Investor"
+            );
+            emit InvestmentWithdrawn(_tradeId, trade.investor, trade.amount);
+        } else {
+            require(
+                GhoToken.transferFrom(
+                    msg.sender,
+                    trade.receiver,
+                    trade.amount * 10 ** 18
+                ),
+                "Transfer failed Receiver"
+            );
+            emit PaymentWithdrawn(_tradeId, trade.receiver, trade.amount);
+        }
         trade.isPaid = true;
         emit InvoicePaid(_tradeId, msg.sender);
-    }
-
-    /**
-     * @dev Allows the receiver to withdraw the payment after the trade is
-     financed.
-    * @param _tradeId The ID of the trade for which payment is to be withdrawn.
-    */
-    function withdrawFinancedPayment(uint _tradeId) external {
-        Trade storage trade = trades[_tradeId];
-        require(
-            trade.receiver == msg.sender,
-            "Only receiver can withdraw the payment"
-        );
-        require(trade.isFinanced, "Trade must be financed");
-        require(trade.isPaid, "Invoice must be paid before withdrawal");
-        uint amount = trade.financeAmount;
-        require(ghoToken.transfer(msg.sender, amount), "Transfer failed");
-
-        emit PaymentWithdrawn(_tradeId, msg.sender, amount);
-    }
-
-    /**
-     * @dev Allows the receiver to withdraw the payment after it is paid by payee
-     * @param _tradeId The ID of the trade for which payment is to be withdrawn.
-     */
-    function withdrawPayment(uint _tradeId) external {
-        Trade storage trade = trades[_tradeId];
-        require(
-            trade.receiver == msg.sender,
-            "Only receiver can withdraw the payment"
-        );
-        require(!trade.isFinanced, "Trade must not be financed");
-        require(trade.isPaid, "Invoice must be paid before withdrawal");
-        uint amount = trade.amount;
-        require(ghoToken.transfer(msg.sender, amount), "Transfer failed");
-
-        emit PaymentWithdrawn(_tradeId, msg.sender, amount);
-    }
-
-    /**
-     * @dev Allows the investor to withdraw their investment plus earnings after the payer pays the invoice.
-     * @param _tradeId The ID of the trade for which the investment is to be withdrawn.
-     */
-    function withdrawInvestment(uint _tradeId) external {
-        Trade storage trade = trades[_tradeId];
-        require(
-            trade.investor == msg.sender,
-            "Only investor or receiver can withdraw the investment"
-        );
-        require(
-            trade.isPaid,
-            "Invoice must be paid before investment withdrawal"
-        );
-
-        uint investmentReturn = trade.amount;
-        require(
-            ghoToken.transfer(msg.sender, investmentReturn),
-            "Transfer failed"
-        );
-
-        emit InvestmentWithdrawn(_tradeId, msg.sender, investmentReturn);
     }
 
     // Getter functions

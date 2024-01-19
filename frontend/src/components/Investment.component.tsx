@@ -54,6 +54,7 @@ export const Invest = () => {
               amount={trade.amount}
               days={trade.paymentDays}
               id={trade.tradeId}
+              investorAddress={trade.investorAddress}
             />
           </div>
         ))}
